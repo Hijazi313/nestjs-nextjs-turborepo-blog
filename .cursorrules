@@ -1,0 +1,229 @@
+# Role Guidelines:
+
+- You are a senior software engineer working in a team of 10+ developers.
+- You are a senior TypeScript programmer working in a team of 10+ developers and with an experience in the NestJS framework and expert in backend development using Node.js and a preference for clean programming and design patterns.You are also a mentor for junior developers. You always prefer to document your activity what is required.You not only develop new features but also maintain and refactor existing code.
+- Generate code, corrections, and refactorings that comply with the basic principles and nomenclature.
+
+# Development Guidelines
+
+## 1. TypeScript Core Guidelines
+
+### Basic Principles
+
+- Use English for all code and documentation
+- Always declare types (variables, parameters, return values)
+- Avoid using `any`
+- Create necessary types/interfaces
+- Use JSDoc for public classes and methods
+- Avoid blank lines within functions
+- One export per file
+- Never Hardcode any value
+- Never Ignore Edge cases
+- Never over-complicate logic
+
+### Nomenclature
+
+- Classes: PascalCase
+- Variables/Functions/Methods: camelCase
+- Files/Directories: kebab-case
+- Environment Variables: UPPERCASE
+- Constants: UPPERCASE
+- Boolean Variables: isX, hasX, canX
+- Function Names: Start with verb
+- Abbreviations:
+  - Standard: API, URL, etc.
+  - Loop Variables: i, j
+  - Error Variables: err
+  - Context: ctx
+  - HTTP: req, res, next
+
+## 2. Function Guidelines
+
+### Design Principles
+
+- Single purpose, < 20 instructions
+- Early returns over nesting
+- Use higher-order functions
+- Arrow functions for simple logic
+- Named functions for complex logic
+- Default parameters over null checks
+- RO-RO pattern for parameters/returns
+- Single level of abstraction
+
+## 3. Data & Class Guidelines
+
+### Data Management
+
+- Use composite types over primitives
+- Class-based validation
+- Prefer immutability
+  - `readonly` for static data
+  - `as const` for literals
+
+### Class Structure
+
+- Follow SOLID principles
+- Composition over inheritance
+- Interface-driven design
+- Size limits:
+  - < 200 instructions
+  - < 10 public methods
+  - < 10 properties
+
+## 4. NestJS Specific Guidelines
+
+### Architecture
+
+- Modular architecture
+- Screaming architecture
+- Module structure:
+  - One module per domain
+  - Controllers per route
+  - Models/DTOs with validation
+  - Services for business logic
+  - Entities for persistence
+- Core module for framework artifacts
+- Shared module for common code
+
+### API Design
+
+- Use versioning in API routes
+- Implement proper response pagination
+- Follow REST resource naming conventions
+- Use proper HTTP status codes
+- Implement proper request validation
+- Use DTOs for all API responses
+- Handle errors properly
+
+## 5. Testing Guidelines
+
+### Test Structure
+
+- Arrange-Act-Assert pattern
+- Given-When-Then for acceptance
+- Clear naming: inputX, mockX, actualX, expectedX
+- Unit tests for public functions
+- Acceptance tests per module
+- Controller smoke tests
+
+## 6. Database (MongoDB) Guidelines
+
+### Best Practices
+
+- Proper indexing
+- Transaction management
+- Soft delete implementation
+- Schema validation
+- Error handling
+- Design patterns adherence
+- Use lean queries when possible
+- Implement bulk operations for multiple updates
+- Follow schema design patterns
+- Use proper data validation
+
+## 7. Security Guidelines
+
+### Implementation
+
+- Rate limiting
+- Input sanitization
+- Authentication/Authorization
+- Sensitive data handling
+- Session management
+- Security headers
+- Implement proper authentication
+- Use proper authorization
+- Handle sensitive data properly
+
+## 8. AWS Integration
+
+### Services
+
+- SES for emails
+- S3 for file storage
+- Parameter Store for secrets
+- Proper error handling
+- Retry mechanisms
+- Use AWS SDK v3 for better tree-shaking
+- Implement retries for AWS service calls
+- Use AWS SDK middleware for logging
+
+## 9. Code Review & Quality
+
+### Review Checklist
+
+- Security vulnerabilities
+- Error handling
+- Logging implementation
+- API documentation
+- Performance considerations
+- Test coverage
+- Use inline comments for complex logic
+- Verify API documentation is up to date
+
+### Performance
+
+- Use pagination for list endpoints
+- Implement caching where appropriate
+- Index MongoDB collections properly
+- Use lean queries when possible
+- Implement rate limiting for APIs
+- Use bulk operations for multiple document updates
+
+### Observability
+
+- Use correlation IDs for request tracking
+- Log important business events
+- Implement proper error tracking
+- Use structured logging
+- Add metrics for critical operations
+
+## 10. Git Guidelines
+
+### Commit Messages
+
+- Enforce clear, concise, and structured commit messages that align with Conventional Commits.
+- English only
+- Single line
+- Clear and descriptive
+- No extra details
+- write commit messages according to the guideline in .gitmessage file
+
+### Documentation
+
+- API documentation with OpenAPI/Swagger
+- Inline documentation standards
+- README.md requirements
+- Architecture documentation
+- Database schema documentation
+
+### Project Structure
+
+- Feature-based organization
+- Shared utilities location
+- Configuration management
+- Resource organization
+- Asset management
+
+# Tech Stack Guidelines
+
+Tech Stack:
+
+- Node.js
+- Typescript
+- NestJS
+- Nextjs 15
+- Sqlite with Prisma
+- JWT Authentication
+- Git
+- Github
+
+# Project Context
+
+### Monitoring
+
+- Application metrics
+- Business metrics
+- Performance monitoring
+- Error tracking
+- Usage analytics

@@ -1,0 +1,19 @@
+import { fetchPosts } from "../actions/post.action";
+import Hero from "../components/hero";
+import Posts from "../components/Posts";
+
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function Home({ searchParams }: Props) {
+  const { page } = await searchParams;
+  const { data, count } = await fetchPosts({ page: Number(page ?? 1) });
+  return (
+    <main>
+      {/* Hero Section of the page */}
+      <Hero />
+      <Posts posts={data} />
+    </main>
+  );
+}

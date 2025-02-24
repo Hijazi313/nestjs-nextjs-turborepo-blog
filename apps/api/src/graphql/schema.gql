@@ -57,7 +57,8 @@ type LoginEntity {
 }
 
 type Query {
-  posts: [Post!]!
+  posts(take: Int = 12, skip: Int = 0): [Post!]!
+  postCount: Int!
   post(id: Int!): Post!
   users: [User!]!
   user(id: Int!): User!

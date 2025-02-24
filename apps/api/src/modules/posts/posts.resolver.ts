@@ -1,10 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 @Resolver(() => Post)
 export class PostsResolver {
@@ -14,12 +12,22 @@ export class PostsResolver {
   createPost(@Args('createPostInput') createPostInput: CreatePostInput) {
     return this.postsService.create(createPostInput);
   }
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Query(() => [Post], { name: 'posts' })
-  findAll() {
-    return this.postsService.findAll();
+  findAll(
+    @Context() context,
+    @Args('take', { type: () => Int, nullable: true, defaultValue: 12 })
+    take: number,
+    @Args('skip', { type: () => Int, nullable: true, defaultValue: 0 })
+    skip: number,
+  ) {
+    return this.postsService.findAll({ take, skip });
   }
 
+  @Query(() => Int, { name: 'postCount' })
+  postCount() {
+    return this.postsService.postCount();
+  }
   @Query(() => Post, { name: 'post' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.postsService.findOne(id);

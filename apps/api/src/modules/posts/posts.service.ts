@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PrismaService } from '../../prisma/prisma.service';
+import { PaginationParams } from '../../types/common';
 
 @Injectable()
 export class PostsService {
@@ -10,8 +11,15 @@ export class PostsService {
     return 'This action adds a new post';
   }
 
-  findAll() {
-    return this.prismaService.post.findMany();
+  findAll({ skip, take }: PaginationParams = { skip: 0, take: 10 }) {
+    return this.prismaService.post.findMany({
+      skip,
+      take,
+    });
+  }
+
+  postCount() {
+    return this.prismaService.post.count();
   }
 
   findOne(id: number) {

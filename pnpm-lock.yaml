@@ -156,6 +156,12 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      graphql:
+        specifier: ^16.10.0
+        version: 16.10.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.10.0)
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.0.0)

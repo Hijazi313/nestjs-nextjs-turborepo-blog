@@ -13,6 +13,33 @@ The system architecture is designed to be modular and scalable. It consists of t
 - **Frontend**: Built using Next.js 15 with React Server Components or Client Components as needed.
 - **Backend**: Developed using NestJS with GraphQL support.
 
+#### Directory Structure:
+
+├── apps/
+│ ├── web/ # Next.js application
+│ │ ├── app/ # App Router
+│ │ ├── public/ # Static assets
+│ │ └── package.json # Next.js dependencies
+│ └── api/ # NestJS application
+│ ├── src/ # NestJS source code
+│ │ ├── modules/ # NestJS modules
+│ │ ├── main.ts # NestJS entry point
+│ │ └── app.module.ts # Root module
+│ └── package.json # NestJS dependencies
+├── packages/
+│ ├── eslint-config/ # Shared ESLint configuration
+│ ├── typescript-config/ # Shared TypeScript configuration
+│ └── shared/ # Shared code
+│ ├── src/
+│ │ ├── types/ # Shared type definitions
+│ │ ├── dto/ # Data Transfer Objects
+│ │ ├── constants/ # Shared constants
+│ │ └── utils/ # Shared utilities
+│ └── package.json
+├── package.json # Root package.json
+├── turbo.json # Turborepo configuration
+└── pnpm-workspace.yaml # PNPM workspace configuration
+
 #### High-Level Architecture Diagram
 
 ```mermaid

@@ -1,6 +1,7 @@
 import { fetchPosts } from "../actions/post.action";
 import Hero from "../components/hero";
 import Posts from "../components/Posts";
+import { DEFAULT_PAGE_SIZE } from "../constants/app";
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -13,7 +14,11 @@ export default async function Home({ searchParams }: Props) {
     <main>
       {/* Hero Section of the page */}
       <Hero />
-      <Posts posts={data} />
+      <Posts
+        posts={data}
+        currentPage={page ? +page : 1}
+        totalPages={Math.ceil(count / DEFAULT_PAGE_SIZE)}
+      />
     </main>
   );
 }

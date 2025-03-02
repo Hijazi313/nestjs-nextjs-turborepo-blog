@@ -22,12 +22,27 @@ export class PostsService {
     return this.prismaService.post.count();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  findOneById(id: number) {
+    return this.prismaService.post.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        author: true,
+        tags: true,
+      },
+    });
   }
 
   update(id: number, updatePostInput: UpdatePostInput) {
-    return `This action updates a #${id} post`;
+    return this.prismaService.post.update({
+      where: {
+        id,
+      },
+      data: {
+        ...updatePostInput,
+      },
+    });
   }
 
   remove(id: number) {

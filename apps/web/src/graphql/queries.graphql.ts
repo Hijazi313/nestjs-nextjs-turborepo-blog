@@ -12,3 +12,23 @@ export const GET_POSTS = gql`
     postCount
   }
 `;
+
+export const GET_POST_BY_ID = gql`
+  query post($id: Int!) {
+    post(id: $id) {
+      id
+      title
+      content
+      thumbnail
+      slug
+      author {
+        name
+      }
+      tags {
+        id
+        name
+      }
+      createdAt
+    }
+  }
+`;

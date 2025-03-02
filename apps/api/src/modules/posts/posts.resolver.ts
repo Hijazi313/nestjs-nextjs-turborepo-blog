@@ -28,9 +28,10 @@ export class PostsResolver {
   postCount() {
     return this.postsService.postCount();
   }
+
   @Query(() => Post, { name: 'post' })
   findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.postsService.findOne(id);
+    return this.postsService.findOneById(id);
   }
 
   @Mutation(() => Post)

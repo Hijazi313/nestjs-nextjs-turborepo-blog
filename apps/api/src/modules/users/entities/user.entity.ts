@@ -20,8 +20,8 @@ export class User {
   avatar?: string;
 
   @Field(() => [Post])
-  posts?: Post[];
+  posts?: Promise<Post[]>;
 
   @Field(() => [Comment])
-  comments: Comment[];
+  comments: Promise<Comment[]>;
 }

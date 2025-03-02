@@ -24,13 +24,13 @@ export class Post {
   published: boolean;
 
   @Field(() => [Tag])
-  tags: Tag[];
+  tags: Promise<Tag[]>;
 
   @Field(() => User)
-  author: User;
+  author: Promise<User>;
 
   @Field(() => [Comment])
-  comments: Comment[];
+  comments: Promise<Comment[]>;
 
   @Field()
   createdAt: Date;

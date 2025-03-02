@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Post } from "../types/modelTypes";
+import { Post } from "../types/model-types";
 import Link from "next/link";
 type Props = Partial<Post>;
 const PostCard = ({ title, createdAt, id, thumbnail, content }: Props) => {

@@ -1,7 +1,11 @@
 import Link from "next/link";
+import { getSession } from "../lib/session";
+import SigninPanel from "./SigninPanel";
+import Profile from "./Profile";
 
 // type Props = {};
-const Navbar = () => {
+const Navbar = async () => {
+  const session = await getSession();
   return (
     <>
       <h1 className="text-2xl font-bold p-2">My Mod Blog</h1>
@@ -9,6 +13,11 @@ const Navbar = () => {
         <Link href="/">Blog</Link>
         <Link href="#about">About</Link>
         <Link href="#contact">Contact</Link>
+        {session && session.user ? (
+          <Profile user={session.user} />
+        ) : (
+          <SigninPanel />
+        )}
       </div>
     </>
   );

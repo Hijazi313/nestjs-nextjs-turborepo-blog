@@ -18,7 +18,7 @@ export class AuthService {
       userId: user.id,
       email: user.email,
     });
-    return { access_token: accessToken };
+    return { access_token: accessToken, ...user };
   }
 
   async validateJwtUser(id: User['id']) {

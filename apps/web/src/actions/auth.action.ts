@@ -10,6 +10,7 @@ import {
 } from "../graphql/mutations.graphql";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createSession } from "../lib/session";
 
 export async function signup(
   state: SignUpFormState,
@@ -54,6 +55,14 @@ export const signin = async (
       message: "Something went wrong",
     };
   // TODO Session for the user
+  await createSession({
+    user: {
+      id: data.login.id,
+      name: data.login.name,
+      avatar: data.login.avatar,
+    },
+    accessToken: data.login.access_token,
+  });
 
   revalidatePath("/");
   redirect("/");

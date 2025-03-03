@@ -54,6 +54,9 @@ type Like {
 
 type LoginEntity {
   access_token: String!
+  id: Int!
+  name: String!
+  avatar: String
 }
 
 type Query {

@@ -5,15 +5,17 @@ import { verify } from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { IAuthJwtPayload } from './types/auth.types';
 import { LoginEntity } from './entities/login.entity';
-import { User } from '../users/entities/user.entity';
+// import { User } from '../users/entities/user.entity';
+import { CreateUserInput } from '../users/dto/create-user.input';
+import { User } from '@prisma/client';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
-  async signIn({ email, password }: SignInInput): Promise<LoginEntity> {
-    const user = await this.validateLocalUser({ email, password });
+  async signIn(user: User): Promise<LoginEntity> {
+    // const user = await this.validateLocalUser({ email, password });
     const accessToken = await this.generateJwt({
       userId: user.id,
       email: user.email,
@@ -27,7 +29,7 @@ export class AuthService {
     return user;
   }
 
-  private async validateLocalUser({ email, password }: SignInInput) {
+  async validateLocalUser({ email, password }: SignInInput) {
     const user = await this.prismaService.user.findUnique({
       where: { email },
     });
@@ -37,6 +39,21 @@ export class AuthService {
     return user;
   }
 
+  async validateGoogleUser(googleUser: CreateUserInput) {
+    const user = await this.prismaService.user.findUnique({
+      where: { email: googleUser.email },
+    });
+    if (user) {
+      const { password, ...authUser } = user;
+      return authUser;
+    }
+
+    const dbUser = await this.prismaService.user.create({
+      data: { ...googleUser },
+    });
+    const { password, ...authUser } = dbUser;
+    return authUser;
+  }
   private async generateJwt(payload: IAuthJwtPayload) {
     const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;

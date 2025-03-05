@@ -8,6 +8,7 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
   @Mutation(() => LoginEntity)
   async login(@Args('signInInput') signInInput: SignInInput) {
-    return this.authService.signIn(signInInput);
+    const user = await this.authService.validateLocalUser(signInInput);
+    return this.authService.signIn(user);
   }
 }

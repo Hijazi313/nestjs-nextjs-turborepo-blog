@@ -23,5 +23,5 @@ export class User {
   posts?: Promise<Post[]>;
 
   @Field(() => [Comment])
-  comments: Promise<Comment[]>;
+  comments: Comment[];
 }

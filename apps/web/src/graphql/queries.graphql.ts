@@ -32,3 +32,18 @@ export const GET_POST_BY_ID = gql`
     }
   }
 `;
+
+export const GET_POST_COMMENTS = gql`
+  query commentsByPost($postId: Int!, $skip: Int, $take: Int) {
+    commentsByPost(postId: $postId, skip: $skip, take: $take) {
+      id
+      content
+      createdAt
+      author {
+        name
+        avatar
+      }
+    }
+    commentsCount(postId: $postId)
+  }
+`;

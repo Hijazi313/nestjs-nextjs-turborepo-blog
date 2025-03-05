@@ -65,7 +65,9 @@ type Query {
   post(id: Int!): Post!
   users: [User!]!
   user(id: Int!): User!
-  comments: [Comment!]!
+  comments(take: Int = 12, skip: Int = 0): [Comment!]!
+  commentsByPost(postId: Int!, take: Int = 12, skip: Int = 0): [Comment!]!
+  commentsCount(postId: Int!): Int!
   comment(id: Int!): Comment!
   tags: [Tag!]!
   tag(id: Int!): Tag!

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { fetchPostById } from "../../../actions/post.action";
-import SanitizedContent from "../_components/SanitizedContent";
+import SanitizedContent from "./_components/SanitizedContent";
+import Comments from "./_components/Comments";
 type Props = {
   params: {
     id: string;
@@ -28,6 +29,7 @@ const PostPage = async ({ params }: Props) => {
       <div className="mt-8">
         <SanitizedContent content={post.content} />
       </div>
+      <Comments postId={postId} />
     </main>
   );
 };

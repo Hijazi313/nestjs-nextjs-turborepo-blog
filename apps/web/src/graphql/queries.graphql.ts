@@ -47,3 +47,10 @@ export const GET_POST_COMMENTS = gql`
     commentsCount(postId: $postId)
   }
 `;
+
+export const POST_LIKES = gql`
+  query postLikes($postId: Int!) {
+    postLikesCount(postId: $postId)
+    userLikedPost(postId: $postId)
+  }
+`;

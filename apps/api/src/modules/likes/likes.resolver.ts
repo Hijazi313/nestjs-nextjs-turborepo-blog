@@ -1,35 +1,53 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { LikesService } from './likes.service';
 import { Like } from './entities/like.entity';
-import { CreateLikeInput } from './dto/create-like.input';
-import { UpdateLikeInput } from './dto/update-like.input';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Like)
 export class LikesResolver {
   constructor(private readonly likesService: LikesService) {}
 
-  @Mutation(() => Like)
-  createLike(@Args('createLikeInput') createLikeInput: CreateLikeInput) {
-    return this.likesService.create(createLikeInput);
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Boolean)
+  likePost(
+    @Context() context,
+    @Args('postId', { type: () => Int }) postId: number,
+  ): Promise<boolean> {
+    const userId = context.req.user.id as number;
+    return this.likesService.like({
+      userId,
+      postId,
+    });
   }
 
-  @Query(() => [Like], { name: 'likes' })
-  findAll() {
-    return this.likesService.findAll();
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Boolean)
+  unlikePost(
+    @Context() context,
+    @Args('postId', { type: () => Int! }) postId: number,
+  ): Promise<boolean> {
+    const userId = context.req.user.id as number;
+    return this.likesService.unlike({
+      userId,
+      postId,
+    });
   }
 
-  @Query(() => Like, { name: 'like' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.likesService.findOne(id);
+  @Query(() => Int)
+  postLikesCount(
+    @Args('postId', { type: () => Int! }) postId: number,
+  ): Promise<number> {
+    return this.likesService.getLikesCountByPostId(postId);
   }
 
-  @Mutation(() => Like)
-  updateLike(@Args('updateLikeInput') updateLikeInput: UpdateLikeInput) {
-    return this.likesService.update(updateLikeInput.id, updateLikeInput);
-  }
-
-  @Mutation(() => Like)
-  removeLike(@Args('id', { type: () => Int }) id: number) {
-    return this.likesService.remove(id);
+  @UseGuards(JwtAuthGuard)
+  @Query(() => Boolean)
+  userLikedPost(
+    @Context() context,
+    @Args('postId', { type: () => Int! }) postId: number,
+  ): Promise<boolean> {
+    const userId = context.req.user.id as number;
+    return this.likesService.userLikedPost(userId, postId);
   }
 }

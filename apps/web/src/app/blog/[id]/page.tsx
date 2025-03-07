@@ -3,6 +3,7 @@ import { fetchPostById } from "../../../actions/post.action";
 import SanitizedContent from "./_components/SanitizedContent";
 import Comments from "./_components/Comments";
 import { getSession } from "../../../lib/session";
+import Like from "./_components/Like";
 type Props = {
   params: {
     id: string;
@@ -31,6 +32,7 @@ const PostPage = async ({ params }: Props) => {
       <div className="mt-8">
         <SanitizedContent content={post.content} />
       </div>
+      <Like postId={postId} user={session?.user} />
       <Comments postId={postId} user={session?.user} />
     </main>
   );

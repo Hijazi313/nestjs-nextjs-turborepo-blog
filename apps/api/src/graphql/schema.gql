@@ -45,13 +45,6 @@ type Post {
   updatedAt: DateTime!
 }
 
-type Like {
-  id: Int!
-  user: User!
-  post: Post!
-  createdAt: DateTime!
-}
-
 type LoginEntity {
   access_token: String!
   id: Int!
@@ -71,8 +64,8 @@ type Query {
   comment(id: Int!): Comment!
   tags: [Tag!]!
   tag(id: Int!): Tag!
-  likes: [Like!]!
-  like(id: Int!): Like!
+  postLikesCount(postId: Int!): Int!
+  userLikedPost(postId: Int!): Boolean!
 }
 
 type Mutation {
@@ -88,9 +81,8 @@ type Mutation {
   createTag(createTagInput: CreateTagInput!): Tag!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
   removeTag(id: Int!): Tag!
-  createLike(createLikeInput: CreateLikeInput!): Like!
-  updateLike(updateLikeInput: UpdateLikeInput!): Like!
-  removeLike(id: Int!): Like!
+  likePost(postId: Int!): Boolean!
+  unlikePost(postId: Int!): Boolean!
   login(signInInput: SignInInput!): LoginEntity!
 }
 
@@ -139,17 +131,6 @@ input CreateTagInput {
 }
 
 input UpdateTagInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateLikeInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateLikeInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

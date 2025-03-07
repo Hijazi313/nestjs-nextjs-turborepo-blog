@@ -123,13 +123,13 @@ input UpdateUserInput {
 }
 
 input CreateCommentInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  content: String!
+  postId: Int!
 }
 
 input UpdateCommentInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  content: String
+  postId: Int
   id: Int!
 }
 

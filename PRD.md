@@ -46,6 +46,7 @@ The blog project is designed as a full-stack application utilizing a monorepo se
 | -------------------- | --------------------------------------------------------------------------------- |
 | User Authentication  | Users can register/login via email/password; optional social media integrations   |
 | Post Management      | Users can create/edit/delete their own posts; administrators can manage all posts |
+| Post Like            | Other Users can Like a post                                                       |
 | Commenting System    | Users can comment on posts; comments are displayed below each post                |
 | Search Functionality | Basic search bar allowing users to find specific articles by keyword/title/author |
 | Responsive Design    | Application is fully responsive across desktop/tablet/mobile devices              |

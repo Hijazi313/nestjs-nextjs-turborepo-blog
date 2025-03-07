@@ -7,24 +7,51 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class CommentsService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(createCommentInput: CreateCommentInput) {
-    return 'This action adds a new comment';
+  create(createCommentInput: CreateCommentInput, authorId: number) {
+    return this.prismaService.comment.create({
+      data: {
+        content: createCommentInput.content,
+        post: {
+          connect: {
+            id: createCommentInput.postId,
+          },
+        },
+        author: {
+          connect: {
+            id: authorId,
+          },
+        },
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  findAll({ take, skip }: { take: number; skip: number }) {
+    return this.prismaService.comment.findMany({
+      take,
+      skip,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} comment`;
+    return this.prismaService.comment.findUnique({
+      where: { id },
+    });
   }
 
   update(id: number, updateCommentInput: UpdateCommentInput) {
-    return `This action updates a #${id} comment`;
+    return this.prismaService.comment.update({
+      where: { id },
+      data: updateCommentInput,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} comment`;
+    return this.prismaService.comment.delete({
+      where: { id },
+    });
   }
 
   findAllCommentsByPost({

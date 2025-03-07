@@ -13,3 +13,18 @@ export type SignUpFormState =
       message?: string;
     }
   | undefined;
+
+export type CommentFormState =
+  | {
+      data?: {
+        content?: string;
+        postId?: number;
+      };
+      errors?: {
+        content?: string[];
+      };
+      message?: string;
+      ok?: boolean;
+      open?: boolean;
+    }
+  | undefined;

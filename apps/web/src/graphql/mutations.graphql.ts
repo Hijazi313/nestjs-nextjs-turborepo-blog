@@ -18,3 +18,11 @@ export const SIGN_IN_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_COMMENT_MUTATION = gql`
+  mutation createComment($createCommentInput: CreateCommentInput!) {
+    createComment(createCommentInput: $createCommentInput) {
+      id
+    }
+  }
+`;

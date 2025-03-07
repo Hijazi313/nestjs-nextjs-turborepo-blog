@@ -1,18 +1,23 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { CommentsService } from './comments.service';
 import { Comment } from './entities/comment.entity';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Comment)
 export class CommentsResolver {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Mutation(() => Comment)
+  @Mutation(() => Comment, { name: 'createComment' })
+  @UseGuards(JwtAuthGuard)
   createComment(
+    @Context() context,
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
   ) {
-    return this.commentsService.create(createCommentInput);
+    const authorId = context.req.user.id;
+    return this.commentsService.create(createCommentInput, authorId);
   }
 
   @Query(() => [Comment], { name: 'comments' })
@@ -22,8 +27,9 @@ export class CommentsResolver {
     @Args('skip', { type: () => Int, nullable: true, defaultValue: 0 })
     skip: number,
   ) {
-    return this.commentsService.findAll();
+    return this.commentsService.findAll({ take, skip });
   }
+
   @Query(() => [Comment], { name: 'commentsByPost' })
   commentsByPost(
     @Args('postId', { type: () => Int! }) postId: number,

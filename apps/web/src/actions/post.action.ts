@@ -10,6 +10,9 @@ import { authFetchGraphQL, fetchGraphQL } from "../lib/fetchGraphQL";
 import { Post } from "../types/model-types";
 import transformTakeAndSkip from "../lib/transformTakeAndSkip";
 import { DEFAULT_PAGE_SIZE } from "../constants/app";
+import { CreatePostFormState } from "../types/form-state";
+import { createPostFormSchema } from "../schemas/post.schema";
+import { CREATE_POST_MUTATION } from "../graphql/mutations.graphql";
 
 export const fetchPosts = async (
   { page, pageSize } = { page: 1, pageSize: DEFAULT_PAGE_SIZE }
@@ -44,4 +47,29 @@ export const fetchUserPosts = async ({
     },
   });
   return { data: data.myPosts as Post[], count: data.myPostsCount as number };
+};
+
+export const createPost = async (
+  state: CreatePostFormState,
+  formData: FormData
+): Promise<CreatePostFormState> => {
+  const validatedFields = createPostFormSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+  if (!validatedFields.success)
+    return {
+      data: Object.fromEntries(formData.entries()),
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  // TODO: Upload thumbnail to supabase
+  const thumbnailUrl = "";
+  const data = await authFetchGraphQL(print(CREATE_POST_MUTATION), {
+    createPostInput: { ...validatedFields.data, thumbnail: thumbnailUrl },
+  });
+  if (data) return { message: "Post created successfully", ok: true };
+  return {
+    message: "Failed to create post",
+    ok: false,
+    data: Object.fromEntries(formData.entries()),
+  };
 };

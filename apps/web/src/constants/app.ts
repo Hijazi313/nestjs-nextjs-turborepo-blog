@@ -4,5 +4,5 @@ export const AppNavigation = {
   signin: "/auth/signin",
   signup: "/auth/signup",
   userPosts: "/users/posts",
-  createPost: "/users/create-post",
+  createPost: "/users/posts/create-post",
 };

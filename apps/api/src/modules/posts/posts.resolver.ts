@@ -11,9 +11,14 @@ import { QueryOptionsInput } from '../../common/dto/query-options.dto';
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Post)
-  createPost(@Args('createPostInput') createPostInput: CreatePostInput) {
-    return this.postsService.createPost(createPostInput);
+  createPost(
+    @Context() context,
+    @Args('createPostInput') createPostInput: CreatePostInput,
+  ) {
+    const user = context.req.user;
+    return this.postsService.createPost(createPostInput, user.id);
   }
   // @UseGuards(JwtAuthGuard)
   @Query(() => [Post], { name: 'posts' })

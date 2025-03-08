@@ -6,9 +6,10 @@ import { BaseService } from '../../common/services/base.service';
 import { QueryBuilderService } from '../../common/services/query-builder.service';
 import { QueryOptionsInput } from '../../common/dto/query-options.dto';
 import { FilterInput } from '../../common/dto/query-options.dto';
+import { Post } from '@prisma/client';
 
 @Injectable()
-export class PostsService extends BaseService {
+export class PostsService extends BaseService<Post> {
   private readonly MODEL = 'post';
 
   constructor(
@@ -18,8 +19,17 @@ export class PostsService extends BaseService {
     super(prismaService, queryBuilderService);
   }
 
-  createPost(createPostInput: CreatePostInput) {
-    return super.create(this.MODEL, createPostInput);
+  createPost(createPostInput: CreatePostInput, userId: number): Promise<Post> {
+    return super.create(this.MODEL, {
+      ...createPostInput,
+      author: { connect: { id: userId } },
+      tags: {
+        connectOrCreate: createPostInput.tags.map((tag) => ({
+          where: { name: tag },
+          create: { name: tag },
+        })),
+      },
+    });
   }
 
   findAll(options: QueryOptionsInput = {}) {

@@ -3,6 +3,9 @@ import { PostsService } from './posts.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
+import { QueryOptionsInput } from '../../common/dto/query-options.dto';
 
 @Resolver(() => Post)
 export class PostsResolver {
@@ -10,37 +13,57 @@ export class PostsResolver {
 
   @Mutation(() => Post)
   createPost(@Args('createPostInput') createPostInput: CreatePostInput) {
-    return this.postsService.create(createPostInput);
+    return this.postsService.createPost(createPostInput);
   }
   // @UseGuards(JwtAuthGuard)
   @Query(() => [Post], { name: 'posts' })
   findAll(
     @Context() context,
-    @Args('take', { type: () => Int, nullable: true, defaultValue: 12 })
-    take: number,
-    @Args('skip', { type: () => Int, nullable: true, defaultValue: 0 })
-    skip: number,
+    @Args('options', { nullable: true }) options?: QueryOptionsInput,
   ) {
-    return this.postsService.findAll({ take, skip });
+    return this.postsService.findAll(options || {});
   }
 
   @Query(() => Int, { name: 'postCount' })
-  postCount() {
-    return this.postsService.postCount();
+  postCount(@Args('options', { nullable: true }) options?: QueryOptionsInput) {
+    return this.postsService.postCount(options || {});
   }
 
   @Query(() => Post, { name: 'post' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.postsService.findOneById(id);
+  findOne(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('options', { nullable: true }) options?: QueryOptionsInput,
+  ) {
+    return this.postsService.findOneById(id, options || {});
   }
 
   @Mutation(() => Post)
   updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
-    return this.postsService.update(updatePostInput.id, updatePostInput);
+    return this.postsService.updatePost(updatePostInput.id, updatePostInput);
   }
 
   @Mutation(() => Post)
   removePost(@Args('id', { type: () => Int }) id: number) {
-    return this.postsService.remove(id);
+    return this.postsService.removePost(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [Post], { name: 'myPosts' })
+  myPosts(
+    @Context() context,
+    @Args('options', { nullable: true }) options?: QueryOptionsInput,
+  ) {
+    const user = context.req.user;
+    return this.postsService.userPosts(user.id, options || {});
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => Int, { name: 'myPostsCount' })
+  myPostsCount(
+    @Context() context,
+    @Args('options', { nullable: true }) options?: QueryOptionsInput,
+  ) {
+    const user = context.req.user;
+    return this.postsService.userPostsCount(user.id, options || {});
   }
 }

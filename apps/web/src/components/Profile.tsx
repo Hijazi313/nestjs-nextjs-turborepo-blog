@@ -44,7 +44,7 @@ const Profile = ({ user }: Props) => {
             <PencilSquareIcon className="w-4 justify-self-end" />{" "}
             <span>Create Post</span>
           </Link>
-          <Link href={AppNavigation.createPost}>
+          <Link href={AppNavigation.userPosts}>
             <ListBulletIcon className="w-4 justify-self-end" />{" "}
             <span>Posts</span>
           </Link>

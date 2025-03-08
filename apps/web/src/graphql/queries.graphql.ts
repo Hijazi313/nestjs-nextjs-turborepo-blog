@@ -1,7 +1,8 @@
 import { gql } from "graphql-tag";
+
 export const GET_POSTS = gql`
-  query posts($skip: Int, $take: Int) {
-    posts(skip: $skip, take: $take) {
+  query posts($options: QueryOptionsInput) {
+    posts(options: $options) {
       id
       title
       content
@@ -14,8 +15,8 @@ export const GET_POSTS = gql`
 `;
 
 export const GET_POST_BY_ID = gql`
-  query post($id: Int!) {
-    post(id: $id) {
+  query post($id: Int!, $options: QueryOptionsInput) {
+    post(id: $id, options: $options) {
       id
       title
       content
@@ -30,6 +31,23 @@ export const GET_POST_BY_ID = gql`
       }
       createdAt
     }
+  }
+`;
+export const GET_POSTS_BY_CURRENT_USER = gql`
+  query GetCurrentUserPosts($options: QueryOptionsInput) {
+    myPosts(options: $options) {
+      id
+      title
+      content
+      thumbnail
+      slug
+      published
+      author {
+        name
+      }
+      createdAt
+    }
+    myPostsCount(options: $options)
   }
 `;
 

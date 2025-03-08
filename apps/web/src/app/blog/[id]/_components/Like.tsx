@@ -14,7 +14,7 @@ type Props = {
   postId: number;
   user?: SessionUser;
 };
-const Like = ({ postId }: Props) => {
+const Like = ({ postId, user }: Props) => {
   const queryClient = useQueryClient();
   const { data } = useQuery({
     queryKey: ["post-likes", postId],
@@ -36,6 +36,7 @@ const Like = ({ postId }: Props) => {
     <div className="flex mt-3 items-center justify-start gap-2">
       {data?.userLikedPost ? (
         <button
+          disabled={!user}
           className="flex items-center gap-2"
           onClick={() => unlikePostMutate()}
         >
@@ -43,6 +44,7 @@ const Like = ({ postId }: Props) => {
         </button>
       ) : (
         <button
+          disabled={!user}
           className="flex items-center gap-2"
           onClick={() => likePostMutate()}
         >

@@ -8,13 +8,13 @@ import { authFetchGraphQL } from "../lib/fetchGraphQL";
 import { POST_LIKES } from "../graphql/queries.graphql";
 
 export const likePost = async (postId: number) => {
-  const like = await authFetchGraphQL(print(LIKE_POST_MUTATION), {
+  return authFetchGraphQL(print(LIKE_POST_MUTATION), {
     postId,
   });
 };
 
 export const unlikePost = async (postId: number) => {
-  const unlike = await authFetchGraphQL(print(UNLIKE_POST_MUTATION), {
+  return authFetchGraphQL(print(UNLIKE_POST_MUTATION), {
     postId,
   });
 };

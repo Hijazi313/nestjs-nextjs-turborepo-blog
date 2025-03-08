@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,15 +10,15 @@ datasource db {
 model User {
   id        Int       @id @default(autoincrement())
   name      String
-  email     String @unique
+  email     String    @unique
   bio       String?
   avatar    String?
   password  String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  posts     Post[]
   comments  Comment[]
   likes     Like[]
+  posts     Post[]
 }
 
 model Post {
@@ -32,23 +29,23 @@ model Post {
   thumbnail String?
   published Boolean
   authorId  Int
-  author    User      @relation(fields: [authorId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   comments  Comment[]
-  tags      Tag[]     @relation("PostTags")
   likes     Like[]
+  author    User      @relation(fields: [authorId], references: [id])
+  tags      Tag[]     @relation("PostTags")
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   postId    Int
-  post      Post     @relation(fields: [postId], references: [id])
   authorId  Int
-  author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
 }
 
 model Tag {
@@ -61,8 +58,9 @@ model Like {
   id        Int      @id @default(autoincrement())
   userId    Int
   postId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
   @@unique([userId, postId])
 }

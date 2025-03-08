@@ -10,6 +10,12 @@ export type Post = {
   comments: Comment[];
   createdAt: Date;
   updatedAt: Date;
+  _count: PostCount;
+};
+
+export type PostCount = {
+  likes: number;
+  comments: number;
 };
 
 export type Tag = {

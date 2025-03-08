@@ -31,6 +31,11 @@ type User {
   comments: [Comment!]!
 }
 
+type PostCount {
+  likes: Int!
+  comments: Int!
+}
+
 type Post {
   id: Int!
   title: String!
@@ -43,6 +48,7 @@ type Post {
   comments: [Comment!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+  _count: PostCount!
 }
 
 type LoginEntity {
@@ -53,9 +59,11 @@ type LoginEntity {
 }
 
 type Query {
-  posts(take: Int = 12, skip: Int = 0): [Post!]!
-  postCount: Int!
-  post(id: Int!): Post!
+  posts(options: QueryOptionsInput): [Post!]!
+  postCount(options: QueryOptionsInput): Int!
+  post(id: Int!, options: QueryOptionsInput): Post!
+  myPosts(options: QueryOptionsInput): [Post!]!
+  myPostsCount(options: QueryOptionsInput): Int!
   users: [User!]!
   user(id: Int!): User!
   comments(take: Int = 12, skip: Int = 0): [Comment!]!
@@ -66,6 +74,30 @@ type Query {
   tag(id: Int!): Tag!
   postLikesCount(postId: Int!): Int!
   userLikedPost(postId: Int!): Boolean!
+}
+
+input QueryOptionsInput {
+  pagination: PaginationInput
+  sort: [SortInput!]
+  filters: [FilterInput!]
+  include: [String!]
+  select: [String!]
+}
+
+input PaginationInput {
+  skip: Int = 0
+  take: Int = 10
+}
+
+input SortInput {
+  field: String!
+  direction: String! = "asc"
+}
+
+input FilterInput {
+  field: String!
+  operator: String!
+  value: String!
 }
 
 type Mutation {

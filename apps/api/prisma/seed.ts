@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
+import { hash } from 'argon2';
 
 const prisma = new PrismaClient();
 
@@ -16,11 +17,13 @@ const generateSlug = (str: string) => {
     .replace(/[^\w-]+/g, ''); // remove all non-word chars
 };
 async function main() {
+  const defaultPassword = await hash('Test@123');
   const users = Array.from({ length: 10 }).map(() => ({
     name: faker.person.fullName(),
-    email: faker.internet.email(),
+    email: faker.internet.email().toLowerCase(),
     bio: faker.lorem.sentence(),
     avatar: faker.image.avatar(),
+    password: defaultPassword,
   }));
 
   await prisma.user.createMany({

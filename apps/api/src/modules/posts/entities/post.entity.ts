@@ -4,6 +4,15 @@ import { User } from '../../users/entities/user.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 
 @ObjectType()
+export class PostCount {
+  @Field(() => Int)
+  likes: number;
+
+  @Field(() => Int)
+  comments: number;
+}
+
+@ObjectType()
 export class Post {
   @Field(() => Int)
   id: number;
@@ -37,4 +46,7 @@ export class Post {
 
   @Field()
   updatedAt: Date;
+
+  @Field(() => PostCount)
+  _count: PostCount;
 }

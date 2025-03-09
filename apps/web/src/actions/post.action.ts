@@ -12,7 +12,10 @@ import transformTakeAndSkip from "../lib/transformTakeAndSkip";
 import { DEFAULT_PAGE_SIZE } from "../constants/app";
 import { CreatePostFormState } from "../types/form-state";
 import { createPostFormSchema } from "../schemas/post.schema";
-import { CREATE_POST_MUTATION } from "../graphql/mutations.graphql";
+import {
+  CREATE_POST_MUTATION,
+  UPDATE_POST_MUTATION,
+} from "../graphql/mutations.graphql";
 import { uploadThumbnail } from "../lib/upload";
 
 export const fetchPosts = async (
@@ -25,7 +28,7 @@ export const fetchPosts = async (
   return { data: data.posts as Post[], count: data.postCount };
 };
 
-export const fetchPostById = async (id: number) => {
+export const fetchPostById = async (id: number): Promise<{ data: Post }> => {
   const data = await fetchGraphQL(print(GET_POST_BY_ID), {
     id,
     options: { include: ["author", "tags"] },
@@ -75,6 +78,35 @@ export const createPost = async (
   if (data) return { message: "Post created successfully", ok: true };
   return {
     message: "Failed to create post",
+    ok: false,
+    data: Object.fromEntries(formData.entries()),
+  };
+};
+
+export const updatePost = async (
+  state: CreatePostFormState,
+  formData: FormData
+) => {
+  const validatedFields = createPostFormSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+  if (!validatedFields.success)
+    return {
+      data: Object.fromEntries(formData.entries()),
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  const postId = formData.get("postId");
+  // todo: check if thumbnail is changed
+  const data = await authFetchGraphQL(print(UPDATE_POST_MUTATION), {
+    updatePostInput: {
+      ...validatedFields.data,
+      thumbnail: "",
+      id: Number(postId),
+    },
+  });
+  if (data) return { message: "Post updated successfully", ok: true };
+  return {
+    message: "Failed to update post",
     ok: false,
     data: Object.fromEntries(formData.entries()),
   };

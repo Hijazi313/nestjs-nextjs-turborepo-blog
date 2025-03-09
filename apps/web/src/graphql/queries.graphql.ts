@@ -22,6 +22,7 @@ export const GET_POST_BY_ID = gql`
       content
       thumbnail
       slug
+      published
       author {
         name
       }

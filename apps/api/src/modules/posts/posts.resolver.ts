@@ -42,9 +42,18 @@ export class PostsResolver {
     return this.postsService.findOneById(id, options || {});
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Post)
-  updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
-    return this.postsService.updatePost(updatePostInput.id, updatePostInput);
+  updatePost(
+    @Context() context,
+    @Args('updatePostInput') updatePostInput: UpdatePostInput,
+  ) {
+    const user = context.req.user;
+    return this.postsService.updatePost(
+      user.id,
+      updatePostInput.id,
+      updatePostInput,
+    );
   }
 
   @Mutation(() => Post)

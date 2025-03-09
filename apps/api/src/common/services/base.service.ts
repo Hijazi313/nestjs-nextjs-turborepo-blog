@@ -39,6 +39,13 @@ export class BaseService<Entity> {
     return (this.prisma[model] as any).findMany(queryOptions);
   }
 
+  // async findOneFirst<T extends PrismaModel>(
+  //   model: T,
+  //   options: QueryOptionsInput = {},
+  // ): Promise<Entity | null> {
+  //   const queryOptions = this.queryBuilder.buildQueryOptions(options);
+  //   return (this.prisma[model] as any).findFirst(queryOptions);
+  // }
   /**
    * Count records with the given filters
    * @param model The Prisma model to query

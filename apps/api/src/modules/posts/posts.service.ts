@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -44,8 +48,38 @@ export class PostsService extends BaseService<Post> {
     return this.findById(this.MODEL, id, options);
   }
 
-  updatePost(id: number, updatePostInput: UpdatePostInput) {
-    return super.update(this.MODEL, id, updatePostInput);
+  // User can only update their own posts
+  async updatePost(
+    userId: number,
+    id: number,
+    updatePostInput: UpdatePostInput,
+  ) {
+    // Check if the user is the author of the post
+    // const post = await this.findOneFirst(this.MODEL, {
+    //   filters: [
+    //     { field: 'id', operator: 'equals', value: id },
+    //     { field: 'authorId', operator: 'equals', value: userId },
+    //   ],
+    // });
+    const post = await this.findOneById(id);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    if (post.authorId !== userId) {
+      throw new UnauthorizedException(
+        'You are not allowed to update this post',
+      );
+    }
+    return super.update(this.MODEL, id, {
+      ...updatePostInput,
+      tags: {
+        set: [],
+        connectOrCreate: updatePostInput.tags.map((tag) => ({
+          where: { name: tag },
+          create: { name: tag },
+        })),
+      },
+    });
   }
 
   removePost(id: number) {

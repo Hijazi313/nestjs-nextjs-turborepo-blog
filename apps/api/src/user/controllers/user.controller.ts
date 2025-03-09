@@ -29,7 +29,7 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Query() options: QueryOptionsInput,
   ): Promise<User | null> {
-    return this.userService.findOne(id, options);
+    return this.userService.findOneFirst(id, options);
   }
 
   @Post()

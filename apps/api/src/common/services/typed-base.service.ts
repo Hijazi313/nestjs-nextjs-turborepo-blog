@@ -49,7 +49,7 @@ export abstract class TypedBaseService<
    * @param options Query options (only include and select are used)
    * @returns The found record or null
    */
-  async findOne(
+  async findOneFirst(
     id: number,
     options: QueryOptionsInput = {},
   ): Promise<Entity | null> {

@@ -31,5 +31,6 @@
   },
   "files.eol": "\n",
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always"
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "cSpell.words": ["supabase"]
 }

@@ -13,6 +13,7 @@ import { DEFAULT_PAGE_SIZE } from "../constants/app";
 import { CreatePostFormState } from "../types/form-state";
 import { createPostFormSchema } from "../schemas/post.schema";
 import { CREATE_POST_MUTATION } from "../graphql/mutations.graphql";
+import { uploadThumbnail } from "../lib/upload";
 
 export const fetchPosts = async (
   { page, pageSize } = { page: 1, pageSize: DEFAULT_PAGE_SIZE }
@@ -61,8 +62,13 @@ export const createPost = async (
       data: Object.fromEntries(formData.entries()),
       errors: validatedFields.error.flatten().fieldErrors,
     };
-  // TODO: Upload thumbnail to supabase
-  const thumbnailUrl = "";
+  let thumbnailUrl = "";
+  // Upload thumbnail to supabase
+  if (validatedFields.data.thumbnail) {
+    thumbnailUrl = await uploadThumbnail(
+      validatedFields.data.thumbnail as File
+    );
+  }
   const data = await authFetchGraphQL(print(CREATE_POST_MUTATION), {
     createPostInput: { ...validatedFields.data, thumbnail: thumbnailUrl },
   });

@@ -11,7 +11,7 @@ const PostListItem = ({ post }: Props) => {
     <div className="grid grid-cols-8 gap-4 rounded-md shadow m-3 p-3 overflow-hidden border border-gray-200 shadow bg-white hover:scale-[1.02] transition-all duration-300">
       <div className="relative w-48 h-32">
         <Image
-          src={post.thumbnail ?? "/no-image.png"}
+          src={post.thumbnail || "/no-image.png"}
           alt={post.title}
           fill
           className="w-full h-full object-cover"
